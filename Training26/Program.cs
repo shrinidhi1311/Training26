@@ -1,33 +1,75 @@
-﻿static void magicmatrix () {
-   int rows = 3;
-   int cols = 3;
-   int[,] matrix1 = new int[rows, cols];
-   int sum = 0;
-   int sum1 = 0;
-   int sum2 = 0;
-   Console.WriteLine ("matrix");
-   for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < cols; j++) {
-         matrix1[i, j] = int.Parse (Console.ReadLine ());
-         Console.WriteLine (matrix1[i, j] + "");
+﻿using System;
+
+class Program {
+   static void Main () {
+      Console.Write ("Enter the order of the matrix: ");
+      int n = int.Parse (Console.ReadLine ());
+
+      int[,] matrix = new int[n, n];
+
+      Console.WriteLine ("Enter the matrix elements:");
+
+      for (int i = 0; i < n; i++) {
+         for (int j = 0; j < n; j++) {
+            matrix[i, j] = int.Parse (Console.ReadLine ());
+         }
       }
-   }
-   for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < cols; j++) {
-         sum += matrix1[i, j];
+
+      int magicSum = 0;
+
+      for (int j = 0; j < n; j++)
+         magicSum += matrix[0, j];
+
+      bool isMagic = true;
+
+
+      for (int i = 0; i < n; i++) {
+         int rowSum = 0;
+         for (int j = 0; j < n; j++)
+            rowSum += matrix[i, j];
+
+         if (rowSum != magicSum) {
+            isMagic = false;
+            break;
+         }
       }
-   }
-   for (int i = 0; i < cols; i++) {
-      for (int j = 0; j < rows; j++) {
-         sum1 += matrix1[j, i];
+
+
+      if (isMagic) {
+         for (int j = 0; j < n; j++) {
+            int colSum = 0;
+            for (int i = 0; i < n; i++)
+               colSum += matrix[i, j];
+
+            if (colSum != magicSum) {
+               isMagic = false;
+               break;
+            }
+         }
       }
-   }
-   for (int i = 0; i < rows; i++) {
-      sum2 += matrix1[i, i];
-   }
-   if (sum == sum1 && sum == sum2) {
-      Console.WriteLine ("True");
-   } else {
-      Console.WriteLine ("False");
+
+
+      if (isMagic) {
+         int diag1 = 0;
+         for (int i = 0; i < n; i++)
+            diag1 += matrix[i, i];
+
+         if (diag1 != magicSum)
+            isMagic = false;
+      }
+
+      if (isMagic) {
+         int diag2 = 0;
+         for (int i = 0; i < n; i++)
+            diag2 += matrix[i, n - 1 - i];
+
+         if (diag2 != magicSum)
+            isMagic = false;
+      }
+
+      if (isMagic)
+         Console.WriteLine ("Magic Matrix");
+      else
+         Console.WriteLine ("Not a Magic Matrix");
    }
 }
